@@ -83,10 +83,12 @@ public enum URLPort: Int {
 }
 
 public enum BaseURL: String {
-    case account = "172.17.1.79"
-    case deposit  = "172.17.1.52"
+    case baseURL = "172.17.1.79"
 }
 
 public enum URLPath: String {
     case showAllAccounts = "accounts"
 }
+
+
+// http://172.17.1.79:30080/accounts/b3e3eb5c-23c5-4e5c-b24b-430115009d4b/requisites аккаунт айди в середине пути

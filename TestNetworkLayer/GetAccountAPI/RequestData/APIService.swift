@@ -26,17 +26,12 @@ final class APIService: APIServiceProtocol {
                 let responseModel = try JSONDecoder().decode(AccountsResponseModel.self, from: data)
                 return (statusCode, responseModel)
             } else {
-                throw NetworkServiceErrors.invalidResponse 
+                throw NetworkServiceErrors.invalidResponse
             }
         } catch {
             print("Произошла ошибка: \(error)")
             throw error
         }
     }
-
-
-    
-    
     
 }
-

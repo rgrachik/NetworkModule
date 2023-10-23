@@ -72,7 +72,7 @@ final class ViewController: UIViewController {
                 if let (statusCode, data) = try await service?.getAccounts(
                     requestData: AccountRequestData(
                         scheme: .http,
-                        baseURL: .account,
+                        baseURL: .baseURL,
                         port: .accountService,
                         urlPath: .showAllAccounts,
                         method: .get,
@@ -90,9 +90,6 @@ final class ViewController: UIViewController {
             }
         }
     }
-    
-    
-    
     
 }
 
