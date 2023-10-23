@@ -8,6 +8,6 @@
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/NetworkManager/NetworkManager.xcodeproj">
+      location = "group:/Users/rgracik/Desktop/TestNetworkLayer/Pods/NetworkManager/NetworkManager.xcodeproj">
    </FileRef>
 </Workspace>

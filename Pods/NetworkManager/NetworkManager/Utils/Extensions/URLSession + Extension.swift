@@ -8,7 +8,7 @@
 import Foundation
 
 public extension URLSession  {
-    func performDataTask(for request: URLRequest) async throws -> (Data, URLResponse) {
+    func performDataTask(with request: URLRequest) async throws -> (Data, URLResponse) {
         try await withCheckedThrowingContinuation { continuation in
             dataTask(with: request) { data, response, error in
                 if let error = error {
@@ -21,7 +21,6 @@ public extension URLSession  {
                     continuation.resume(throwing: NetworkServiceErrors.emptyResponse)
                     return
                 }
-                
                 continuation.resume(returning: (data, response))
             }
             .resume()

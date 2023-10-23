@@ -7,8 +7,19 @@
 
 import Foundation
 
-public class NetworkClient {
-    public func doThis() {}
+protocol NetworkClientProtocol{
+    
+}
+
+public final class NetworkClient: NetworkClientProtocol {
+    
+    // MARK: - init
     
     public init() {}
+    
+    // MARK: - methods
+    
+    public func getAccounts() {
+        
+    }
 }

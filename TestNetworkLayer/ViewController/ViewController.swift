@@ -5,25 +5,38 @@
 //  Created by Роман Грачик on 17.10.2023.
 //
 
-import NetworkManager
 import SnapKit
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
     
-    var service: APIServiceProtocol?
+    let uuid = ["X-Customer-Id": "f65f79b6-ff2b-467e-82e1-91dff7dbcf4c"]
+    
+    private var service: APIServiceProtocol?
     
     private var button = UIButton(type: .system)
     private var label = UILabel()
-
+    
+    init(service: APIService) {
+        
+        super.init(nibName: nil, bundle: nil)
+        self.service = service
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         setupUI()
         setupLayout()
     }
-
+    
     private func setupUI() {
+        view.backgroundColor = UIColor.white
+        
         view.addSubview(button)
         view.addSubview(label)
         
@@ -51,14 +64,35 @@ class ViewController: UIViewController {
     @objc func get() {
         Task {
             do {
-                let response = try await service?.getAccounts(requestData: <#T##AccountRequestData#>)
+                var queryItems: [URLQueryItem] = []
+                queryItems.append(URLQueryItem(name: "statuses", value: ""))
+                queryItems.append(URLQueryItem(name: "page", value: "0"))
+                queryItems.append(URLQueryItem(name: "sort", value: "id,DESC"))
+                
+                if let (statusCode, data) = try await service?.getAccounts(
+                    requestData: AccountRequestData(
+                        scheme: .http,
+                        baseURL: .account,
+                        port: .accountService,
+                        urlPath: .showAllAccounts,
+                        method: .get,
+                        headers: uuid
+                    ),
+                    queryItems: queryItems, headers: uuid
+                ) {
+                    let count = data.accounts.count
+                    self.label.text = "Number of accounts: \(count) status code \(statusCode)"
+                } else {
+                    print("Response is nil")
+                }
             } catch {
-                // show alert
+                print(#function)
             }
         }
-        
     }
     
-
+    
+    
+    
 }
 
