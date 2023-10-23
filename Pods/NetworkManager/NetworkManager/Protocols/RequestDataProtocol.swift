@@ -8,6 +8,7 @@
 import Foundation
 
 public protocol RequestDataProtocol {
+    
     associatedtype RequestBody
     
     var scheme: Scheme { get }
@@ -22,7 +23,7 @@ public protocol RequestDataProtocol {
 
 public extension RequestDataProtocol {
     func createRequest(with headers: [String: String]) -> URLRequest? {
-        let urlString = "\(scheme)://\(baseURL.rawValue):\(port.rawValue)/\(urlPath.rawValue)"
+        let urlString = "\(scheme)://\(baseURL.rawValue):\(port.rawValue)/\(urlPath)"
         
         guard let url = URL(string: urlString) else {
             return nil
@@ -86,8 +87,9 @@ public enum BaseURL: String {
     case baseURL = "172.17.1.79"
 }
 
-public enum URLPath: String {
-    case showAllAccounts = "accounts"
+public enum URLPath {
+    case accounts
+    case customPath(String)
 }
 
 

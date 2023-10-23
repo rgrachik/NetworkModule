@@ -74,7 +74,7 @@ final class ViewController: UIViewController {
                         scheme: .http,
                         baseURL: .baseURL,
                         port: .accountService,
-                        urlPath: .showAllAccounts,
+                        urlPath: .accounts,
                         method: .get,
                         headers: uuid
                     ),
