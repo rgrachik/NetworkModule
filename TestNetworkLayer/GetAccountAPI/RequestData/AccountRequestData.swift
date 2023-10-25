@@ -16,18 +16,17 @@ struct AccountRequestData: RequestDataProtocol {
     
     typealias RequestBody = RequestBodyType
     
-    var scheme: NetworkManager.Scheme
+    var scheme: NetworkManager.Scheme = .http
     
-    var baseURL: NetworkManager.BaseURL
+    var baseURL: NetworkManager.BaseURL = .baseURL
     
-    var port: NetworkManager.URLPort
+    var port: NetworkManager.URLPort = .accountService
     
-    var urlPath: NetworkManager.URLPath
+    var urlPath: NetworkManager.URLPath = .accounts
     
-    var method: NetworkManager.Method
+    var method: NetworkManager.Method = .get
     
-    var headers: [String : String]?
+    var headers: [String : String]? = ["X-Customer-Id": "f65f79b6-ff2b-467e-82e1-91dff7dbcf4c"]
     
     var queryItems: [URLQueryItem]?
-    
 }

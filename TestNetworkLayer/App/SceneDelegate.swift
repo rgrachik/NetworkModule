@@ -4,7 +4,7 @@
 //
 //  Created by Роман Грачик on 17.10.2023.
 //
-
+import NetworkManager
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         
-        let rootViewController = ViewController(service: APIService())
+        let rootViewController = ViewController(service: APIService(client: NetworkClient()))
         window = UIWindow(windowScene: scene)
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()

@@ -8,30 +8,21 @@ import NetworkManager
 import Foundation
 
 protocol APIServiceProtocol: AnyObject {
-    func getAccounts(requestData: AccountRequestData, queryItems: [URLQueryItem], headers: [String: String]) async throws -> (statusCode: Int, AccountsResponseModel)
+    func getAccounts(requestData: AccountRequestData) async throws -> (AccountsResponseModel)
 }
 
 final class APIService: APIServiceProtocol {
     
-    //    let networkService = NetworkClient()
+    let client: any NetworkClientProtocol
     
-    func getAccounts(requestData: AccountRequestData, queryItems: [URLQueryItem], headers: [String: String]) async throws -> (statusCode: Int, AccountsResponseModel) {
-        let request = requestData.createRequest(with: headers)
-        let session = URLSession(configuration: .default)
-        
-        do {
-            let (data, response) = try await session.performDataTask(with: request!)
-            if let httpResponse = response as? HTTPURLResponse {
-                let statusCode = httpResponse.statusCode
-                let responseModel = try JSONDecoder().decode(AccountsResponseModel.self, from: data)
-                return (statusCode, responseModel)
-            } else {
-                throw NetworkServiceErrors.invalidResponse
-            }
-        } catch {
-            print("Произошла ошибка: \(error)")
-            throw error
-        }
+    init(client: any NetworkClientProtocol) {
+        self.client = client
+    }
+    
+    //MARK: - getAllAccounts
+    
+    func getAccounts(requestData: AccountRequestData) async throws -> AccountsResponseModel {
+        try await client.performRequest(request: requestData)
     }
     
 }

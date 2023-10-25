@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - common request protocol
+
 public protocol RequestDataProtocol {
     
     associatedtype RequestBody
@@ -22,20 +24,32 @@ public protocol RequestDataProtocol {
 }
 
 public extension RequestDataProtocol {
-    func createRequest(with headers: [String: String]) -> URLRequest? {
+    
+    func createRequest() -> URLRequest? {
+        
+        // MARK: - build URL
+        
         let urlString = "\(scheme)://\(baseURL.rawValue):\(port.rawValue)/\(urlPath)"
         
         guard let url = URL(string: urlString) else {
             return nil
         }
         
+        // MARK: - build request
+        
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = method.rawValue
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        for (key, value) in headers {
-            urlRequest.setValue(value, forHTTPHeaderField: key)
-        }
+        // MARK: - add headers
+        
+        if let headers = headers {
+                for (key, value) in headers {
+                    urlRequest.setValue(value, forHTTPHeaderField: key)
+                }
+            }
+        
+        // MARK: - check for queryItems
         
         if let params = queryItems, !params.isEmpty {
             if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) {
@@ -43,6 +57,8 @@ public extension RequestDataProtocol {
                 urlRequest.url = urlComponents.url
             }
         }
+        
+        // MARK: - check for body
         
         if let body = bodyParams {
             do {
@@ -57,6 +73,7 @@ public extension RequestDataProtocol {
     }
 }
 
+// MARK: - enums
 
 public enum Method: String {
     case get
@@ -91,6 +108,3 @@ public enum URLPath {
     case accounts
     case customPath(String)
 }
-
-
-// http://172.17.1.79:30080/accounts/b3e3eb5c-23c5-4e5c-b24b-430115009d4b/requisites аккаунт айди в середине пути

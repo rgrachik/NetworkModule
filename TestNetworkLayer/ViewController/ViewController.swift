@@ -10,12 +10,16 @@ import UIKit
 
 final class ViewController: UIViewController {
     
-    let uuid = ["X-Customer-Id": "f65f79b6-ff2b-467e-82e1-91dff7dbcf4c"]
+    // MARK: - network service
     
     private var service: APIServiceProtocol?
     
+    // MARK: - UI
+    
     private var button = UIButton(type: .system)
     private var label = UILabel()
+    
+    // MARK: - init
     
     init(service: APIService) {
         
@@ -27,12 +31,15 @@ final class ViewController: UIViewController {
         super.init(coder: coder)
     }
     
+    // MARK: - override func
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupLayout()
     }
+    
+    // MARK: - private func
     
     private func setupUI() {
         view.backgroundColor = UIColor.white
@@ -61,35 +68,19 @@ final class ViewController: UIViewController {
         
     }
     
+    // MARK: - @objc func
+    
     @objc func get() {
         Task {
             do {
-                var queryItems: [URLQueryItem] = []
-                queryItems.append(URLQueryItem(name: "statuses", value: ""))
-                queryItems.append(URLQueryItem(name: "page", value: "0"))
-                queryItems.append(URLQueryItem(name: "sort", value: "id,DESC"))
-                
-                if let (statusCode, data) = try await service?.getAccounts(
-                    requestData: AccountRequestData(
-                        scheme: .http,
-                        baseURL: .baseURL,
-                        port: .accountService,
-                        urlPath: .accounts,
-                        method: .get,
-                        headers: uuid
-                    ),
-                    queryItems: queryItems, headers: uuid
-                ) {
-                    let count = data.accounts.count
-                    self.label.text = "Number of accounts: \(count) status code \(statusCode)"
-                } else {
-                    print("Response is nil")
-                }
-            } catch {
+                let request = AccountRequestData()
+                let result = try await service?.getAccounts(requestData: request)
+                label.text = String(result?.accounts.count ?? 0)
+            }
+            catch {
                 print(#function)
             }
         }
+        
     }
-    
 }
-
